@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+gem install 'rails_best_practices'
+
+rails_best_practices .

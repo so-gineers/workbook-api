@@ -1,0 +1,5 @@
+# frozen_strig_literal: true
+
+gem "rails", "~> 7.0.0.alpha2"
+
+eval_gemfile "CommonGemfile"

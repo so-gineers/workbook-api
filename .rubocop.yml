@@ -1,0 +1,36 @@
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - db/schema.rb
+    - bin/*
+    - db/migrate/*
+
+Layout/LineLength:
+  Max: 120
+
+Lint/EmptyBlock:
+  Enabled: false
+
+Style/OpenStructUse:
+  Enabled: false
+
+Lint/MissingSuper:
+  Exclude:
+    - app/lib/app/teachers/tokens/encoder.rb
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+    - db/schema.rb
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*
+
+Style/Documentation:
+  Exclude:
+    - db/migrate/*
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

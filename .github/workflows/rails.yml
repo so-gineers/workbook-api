@@ -1,0 +1,49 @@
+name: Ruby
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: ['2.7.4', '2.7.5']
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: ${{ runner.os }}-gems-
+    - uses: Harmon758/postgresql-action@v1.0.0
+      with:
+        postgresql version: latest
+        postgresql db: workook_api_test
+        postgresql user: workook_api_test
+        postgresql password: workook_api_test
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+    - name: Rubocop
+      run: gem install rubocop && rubocop
+    - name: Strong versions
+      run: gem install strong_versions && strong_versions
+    - name: Bundle audit
+      run: gem install bundler-audit && bundler-audit --update
+    - name: Run tests on Rails/StableBranch
+      env:
+        RAILS_ENV: test
+        RAILS_DB_NAME: workook_api_test
+        RAILS_DB_USER: workook_api_test
+        RAILS_DB_HOST: localhost
+        RAILS_DB_PORT: 5432
+        RAILS_DB_PASSWORD: workook_api_test
+      run: |
+        bundle install
+        bundle exec rails db:create
+        bundle exec rails db:migrate
+        bundle exec rails db:rollback
+        bundle exec rails db:migrate
+        bundle exec rspec --fail-fast
