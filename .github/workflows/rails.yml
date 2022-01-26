@@ -7,7 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['2.7.4', '2.7.5']
+        include:
+          - ruby-version: '2.7.4'
+            bundle_gemfile: Gemfile
+          - ruby-version: '2.7.4'
+            bundle_gemfile: NextGemfile
     steps:
     - uses: actions/checkout@v2
     - uses: actions/cache@v2
@@ -28,6 +32,7 @@ jobs:
         bundler-cache: true
     - name: Rubocop
       run: gem install rubocop && rubocop
+      continue-on-error: true
     - name: Strong versions
       run: gem install strong_versions && strong_versions
     - name: Bundle audit
@@ -40,6 +45,7 @@ jobs:
         RAILS_DB_HOST: localhost
         RAILS_DB_PORT: 5432
         RAILS_DB_PASSWORD: workook_api_test
+        BUNDLE_GEMFILE: ${{ matrix.bundle_gemfile }}
       run: |
         bundle install
         bundle exec rails db:create
