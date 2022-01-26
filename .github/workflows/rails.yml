@@ -31,12 +31,18 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
     - name: Rubocop
-      run: gem install rubocop && rubocop
+      run: |
+        gem install rubocop
+        rubocop
       continue-on-error: true
     - name: Strong versions
-      run: gem install strong_versions && strong_versions
+      run: |
+        gem install strong_versions
+        strong_versions
     - name: Bundle audit
-      run: gem install bundler-audit && bundler-audit --update
+      run: |
+        gem install bundler-audit
+        bundler-audit --update
     - name: Run tests on Rails/StableBranch
       env:
         RAILS_ENV: test
