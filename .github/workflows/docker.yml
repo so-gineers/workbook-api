@@ -41,8 +41,7 @@ jobs:
             ${{ runner.os }}-buildx-dev
       - name: Log in to github registry
         run:  |
-          echo "${{ secrets.GITHUB_TOKEN }}" |
-          docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Build Docker image for current rails version
         id: docker_build
         uses: docker/build-push-action@v2

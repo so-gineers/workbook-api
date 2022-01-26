@@ -35,10 +35,6 @@ jobs:
         gem install rubocop
         rubocop
       continue-on-error: true
-    - name: Strong versions
-      run: |
-        gem install strong_versions
-        strong_versions
     - name: Bundle audit
       run: |
         gem install bundler-audit

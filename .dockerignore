@@ -1,0 +1,11 @@
+tags
+vendor
+tmp
+doc/*
+/.yardoc
+*.DS_Store
+rspec_errors.log
+node_modules
+storage
+coverage
+log
