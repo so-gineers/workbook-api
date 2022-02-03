@@ -1,0 +1,76 @@
+name: Docker
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ruby-version:   "2.7.4"
+            pg-cli-version:   "13+225"
+            bundler-version:   "2.2.31"
+          - ruby-version:   "2.7.5"
+            pg-cli-version:   "13+225"
+            bundler-version:   "2.2.31"
+          - ruby-version:   "3.0.3"
+            pg-cli-version:   "13+225"
+            bundler-version:   "2.2.32"
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Set up Docker build for current rails version
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          install: true
+      - name: Set up Docker build for next rails version
+        id: buildx-rails-next
+        uses: docker/setup-buildx-action@v1
+        with:
+          install: true
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-dev-${{ matrix.ruby-version }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-dev-${{ matrix.ruby-version }}
+            ${{ runner.os }}-buildx-dev
+      - name: Log in to github registry
+        run:  |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build Docker image for current rails version
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          file: ./docker/dev/Dockerfile
+          pull: true
+          push: true #${{ github.event_name != 'pull_request' }}
+          tags: |
+            ghcr.io/so-gineers/workbook:1.0.0-ruby-${{ matrix.ruby-version }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          build-args: |
+            RUBY_VERSION=${{ matrix.ruby-version }}
+            BUNDLER_VERSION=${{ matrix.bundler-version }}
+            PG_CLI_VERSION=${{ matrix.pg-cli-version }}
+      - name: Build Docker image for next rails version
+        id: docker_build_next_rails
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx-rails-next.outputs.name }}
+          file: ./docker/dev/Dockerfile.next
+          pull: true
+          push: true # ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ghcr.io/so-gineers/workbook-next:1.0.0-ruby-${{ matrix.ruby-version }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          build-args: |
+            RUBY_VERSION=${{ matrix.ruby-version }}
+            BUNDLER_VERSION=${{ matrix.bundler-version }}
+            PG_CLI_VERSION=${{ matrix.pg-cli-version }}
