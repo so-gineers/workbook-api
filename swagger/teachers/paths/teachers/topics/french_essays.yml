@@ -1,0 +1,25 @@
+post:
+  tags:
+    - "teachers"
+  summary: "Creates a new french essay topic"
+  description: ""
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Request parameters"
+      required: true
+      schema:
+        type: "object"
+        properties:
+          subject_text:
+            type: "string"
+  responses:
+    401:
+      description: "Teacher not authorized"
+    200:
+      description: "French essay topic successfully created"
+  security:
