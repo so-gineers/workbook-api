@@ -1,0 +1,27 @@
+swagger: "2.0"
+host: "localhost:3312"
+basePath: "/"
+info:
+  description: "Workbook open source platform"
+  version: "1.0.0"
+  title: "Worbook"
+  termsOfService: "https://wbk.so-gineers.com"
+  contact:
+    email: "hello@so-gineers.com"
+tags:
+- name: "teachers"
+  description: "Endpoints for teachers"
+- name: "students"
+  description: "Endpoints for students"
+
+schemes:
+- "https"
+- "http"
+paths:
+  /t/sessions:
+    $ref: './paths/teachers/sessions.yml'
+  /t/topics/french_essays:
+    $ref: './paths/teachers/topics/french_essays.yml'
+  /t/submissions/french_essays:
+    $ref: './paths/teachers/submissions/french_essays.yml'
+

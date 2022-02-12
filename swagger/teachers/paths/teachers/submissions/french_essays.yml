@@ -1,0 +1,27 @@
+post:
+  tags:
+    - "teachers"
+  summary: "Assigns a french essay submission to a teacher"
+  description: ""
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Parameters for submission assignment"
+      required: true
+      schema:
+        type: "object"
+        properties:
+          submission_id:
+            type: "string"
+  responses:
+    400:
+      description: "Bad Request"
+    401:
+      description: "Teacher not authorized"
+    200:
+      description: "French essay successfully assigned to teacher"
+  security:

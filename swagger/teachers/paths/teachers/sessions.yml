@@ -1,0 +1,27 @@
+post:
+  tags:
+    - "teachers"
+  summary: "teachers login endpoint"
+  description: ""
+  consumes:
+    - "application/json"
+  produces:
+    - "application/json"
+  parameters:
+    - in: "body"
+      name: "body"
+      description: "Credentials used to login the teacher"
+      required: true
+      schema:
+        type: "object"
+        properties:
+          identifier:
+            type: "string"
+          password:
+            type: "string"
+  responses:
+    401:
+      description: "Teacher not authorized"
+    200:
+      description: "Teacher logged in successfully"
+  security:
