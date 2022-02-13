@@ -39,7 +39,7 @@ jobs:
       run: |
         gem install bundler-audit
         bundler-audit --update
-    - name: Run tests on Rails/StableBranch
+    - name: Rspec
       env:
         RAILS_ENV: test
         RAILS_DB_NAME: workook_api_test
@@ -50,8 +50,11 @@ jobs:
         BUNDLE_GEMFILE: ${{ matrix.bundle_gemfile }}
       run: |
         bundle install
-        bundle exec rails db:create
-        bundle exec rails db:migrate
-        bundle exec rails db:rollback
-        bundle exec rails db:migrate
-        bundle exec rspec --fail-fast
+        bundle exec rails db:create db:migrate
+        bundle exec rspec
+    - uses: codecov/codecov-action@v2
+      name: Code coverage
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: true
+        verbose: true

@@ -3,6 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+gem 'activerecord-pg_enum', '~> 1.2'
 gem "bcrypt", "~> 3.1"
 gem "blueprinter", "~> 0.25.3"
 gem "bootsnap", "~> 1.7"
@@ -21,12 +22,18 @@ group :development, :test do
   gem "guard-rspec", "~> 4.7"
   gem "rspec-rails", "~> 5.0"
   gem "strong_migrations", "~> 0.7.8"
-  gem "ruby-debug-ide", require: false
-  gem "debase", require: false
-  gem 'solargraph', require: false
+  gem "undercover"
 end
 
 group :development do
+  gem "debase", require: false
+  gem 'solargraph', require: false
   gem "listen", "~> 3.3"
+  gem "ruby-debug-ide", require: false
   gem "spring", "~> 2.1"
+end
+
+group :test do
+  gem 'simplecov'
+  gem 'simplecov-lcov'
 end

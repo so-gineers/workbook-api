@@ -30,7 +30,8 @@ module WorkookApi
     end
 
     config.api_only = true
-
+    config.autoload_paths << config.root.join('lib')
+    config.eager_load_paths << config.root.join('lib')
     config.generators do |generator|
       generator.orm :active_record, primary_key_type: :uuid
     end
