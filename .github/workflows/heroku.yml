@@ -15,3 +15,10 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "workbook-api-demo"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true
+          stack: "container"
+          docker_build_args: |
+            RUBY_VERSION='2.7'
+            PG_CLI_VERSION='13+225'
+            BUNDLER_VERSION='2.2.31'
+            BUNDLE_GEMFILE=Gemfile
