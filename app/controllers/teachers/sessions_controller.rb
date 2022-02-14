@@ -3,17 +3,11 @@
 module Teachers
   #  Teacher sessions
   class SessionsController < TeachersBaseController
-    rescue_from(
-      ::APP::Exceptions::SessionInvalide,
-      with: :invalid_session
-    )
-
-    rescue_from(
-      ::APP::Exceptions::InvalidCredentials,
-      with: :invalid_credentials
-    )
-
+    add_service :auth_service, ::APP::Teachers::Authentification
     skip_before_action :authenticate_teacher
+
+    rescue_from(::APP::Exceptions::SessionInvalide, with: :invalid_session)
+    rescue_from(::APP::Exceptions::InvalidCredentials, with: :invalid_credentials)
 
     def create
       result = auth_service.authenticate(session: new_session)
@@ -24,11 +18,6 @@ module Teachers
         render json: {}, status: :unprocessable_entity
       end
     end
-
-    def auth_service
-      ::APP::Teachers::Authentification.new
-    end
-
     private
 
     def invalid_session
