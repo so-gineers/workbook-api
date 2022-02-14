@@ -29,10 +29,12 @@ ActiveRecord::Schema.define(version: 2021_08_13_092347) do
     t.string "last_name", null: false
     t.datetime "locked_at"
     t.string "phone_number", null: false
-    t.string "bio"
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_db_teachers_on_email", unique: true
+    t.index ["phone_number"], name: "index_db_teachers_on_phone_number", unique: true
+    t.index ["status"], name: "index_db_teachers_on_status"
   end
 
 end
