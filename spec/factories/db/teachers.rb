@@ -10,16 +10,16 @@ FactoryBot.define do
     banned_at { }
     password { 'workbook' }
 
-    trait :active do
+    trait :with_status_active do
       status { 'active' }
     end
 
-    trait :locked do
+    trait :with_status_locked do
       status { 'locked' }
       locked_at { Time.current }
     end
 
-    trait :banned do
+    trait :with_status_banned do
       status { 'banned' }
       banned_at { Time.current }
     end
