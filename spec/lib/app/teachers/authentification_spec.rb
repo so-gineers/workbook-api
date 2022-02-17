@@ -50,8 +50,8 @@ RSpec.describe APP::Teachers::Authentification do
               expect(result).to be_a(APP::Results::Success)
             end
 
-            it "returns teacher token" do
-              expect(result.data).to respond_to(:token)
+            it "returns teacher model" do
+              expect(result.data).to be_a(Db::Teacher)
             end
           end
         end

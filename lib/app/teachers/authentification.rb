@@ -16,7 +16,7 @@ module APP
       # @return [Result::Success]
       # @raise [
       #    APP::Exceptions::SessionInvalide,
-      #    APP::Exceptions::InvalidCredentials, 
+      #    APP::Exceptions::InvalidCredentials,
       #    APP::Exceptions::TeacherAccountLocked,
       #    APP::Exceptions::TeacherAccountPending,
       #    ]
@@ -29,7 +29,7 @@ module APP
         raise(Exceptions::TeacherAccountLocked, session) if teacher.status.eql?('locked')
         raise(Exceptions::TeacherAccountPending, session) if teacher.status.eql?('pending')
 
-        return succes_response(teacher) if teacher.authenticate(session.password)
+        return Results::Success.new(data: teacher) if teacher.authenticate(session.password)
 
         raise(Exceptions::InvalidCredentials, session)
       end
@@ -46,24 +46,6 @@ module APP
         raise(Exceptions::TokenVide) if data.nil? || data.empty? || data.empty?
 
         repository.find(data['id'])
-      end
-
-      private
-
-      def succes_response(teacher)
-        Results::Success.new(
-          data: OpenStruct.new(token: token(teacher),
-                               display_name: [teacher.person_title, teacher.last_name.upcase].join)
-        )
-      end
-
-      def token(teacher)
-        encodeur_jwt(teacher)
-          .encoder(secret_key: Rails.application.credentials.jwt_students_secret)
-      end
-
-      def encodeur_jwt(teacher)
-        Tokens::Encoder.new(teacher: teacher)
       end
     end
   end

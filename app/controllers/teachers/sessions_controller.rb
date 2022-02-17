@@ -21,7 +21,8 @@ module Teachers
       result = auth_service.authenticate(session: new_session)
 
       if result.success?
-        render json: { token: result.data.token, id: SecureRandom.uuid, name: 'Mr SENE' }, status: :created
+        json = APP::JsonFormatters::TeacherSession.render(result.data)
+        render json: json, status: :created
       else
         render json: {}, status: :unprocessable_entity
       end
