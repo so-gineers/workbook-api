@@ -37,7 +37,8 @@ COPY CommonGemfile \
 
 WORKDIR /opt/workbook/
 
-RUN bundle install \
+RUN bundle update --bundler \
+    && bundle install \
     && BUNDLE_GEMFILE=NextGemfile bundle install \
     && gem cleanup all
 

@@ -37,7 +37,7 @@ services:
     ports:
       - '2522:3000'
     entrypoint: rspec-entrypoint-next.sh
-    env_file: ./docker/dev/test.env
+    env_file: ./docker/dev/next-test.env
     stdin_open: true
     environment:
       - BUNDLE_GEMFILE=NextGemfile
