@@ -14,8 +14,12 @@ module APP
       # Authenticates the teacher using a session object.
       # @param [SessionAbstraite]
       # @return [Result::Success]
-      # @raise [APP::Exceptions::SessionInvalide,
-      #    APP::Exceptions::InvalidCredentials]
+      # @raise [
+      #    APP::Exceptions::SessionInvalide,
+      #    APP::Exceptions::InvalidCredentials, 
+      #    APP::Exceptions::TeacherAccountLocked,
+      #    APP::Exceptions::TeacherAccountPending,
+      #    ]
       def authenticate(session:)
         raise(Exceptions::SessionInvalide) unless session.acceptable?
 

@@ -11,6 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
+        env:
+          RUBY_VERSION: 2.7
+          PG_CLI_VERSION: 13+225
+          BUNDLER_VERSION: 2.2.31
+          BUNDLE_GEMFILE: Gemfile
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "workbook-api-demo"
@@ -18,7 +23,7 @@ jobs:
           usedocker: true
           stack: "container"
           docker_build_args: |
-            RUBY_VERSION='2.7'
-            PG_CLI_VERSION='13+225'
-            BUNDLER_VERSION='2.2.31'
-            BUNDLE_GEMFILE=Gemfile
+            RUBY_VERSION
+            PG_CLI_VERSION
+            BUNDLER_VERSION
+            BUNDLE_GEMFILE
