@@ -6,8 +6,16 @@ module Teachers
     add_service :auth_service, ::APP::Teachers::Authentification
     skip_before_action :authenticate_teacher
 
-    rescue_from(::APP::Exceptions::SessionInvalide, with: :invalid_session)
-    rescue_from(::APP::Exceptions::InvalidCredentials, with: :invalid_credentials)
+    rescue_from ::APP::Exceptions::SessionInvalide do
+      render json: {}, status: :precondition_failed
+    end
+
+    rescue_from ::APP::Exceptions::InvalidCredentials do
+      render(
+        json: { message: 'Utilisateur introuvable' },
+        status: :precondition_failed
+      )
+    end
 
     def create
       result = auth_service.authenticate(session: new_session)
@@ -20,23 +28,12 @@ module Teachers
     end
     private
 
-    def invalid_session
-      render json: {}, status: :precondition_failed
-    end
-
     def new_session
       ::APP::Teachers::Session.new(session_params)
     end
 
     def session_params
       params.permit(:identifier, :password)
-    end
-
-    def invalid_credentials
-      render(
-        json: { message: 'Utilisateur introuvable' },
-        status: :precondition_failed
-      )
     end
   end
 end
