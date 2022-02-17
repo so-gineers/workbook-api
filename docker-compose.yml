@@ -31,19 +31,31 @@ services:
     volumes:
       - ./:/opt/workbook
       - ./tmp:/opt/workbook/tmp/
-    build:
-      dockerfile: docker/dev/Dockerfile.next
-      context: .
-      args:
-        RUBY_VERSION: '2.7.4'
-        PG_CLI_VERSION: '13+225'
-        BUNDLER_VERSION: '2.2.31'
-    image: workbook-next-test:1.0.0
+    image: base_api
+    networks:
+      - wbk-db-net
     ports:
       - '2522:3000'
     entrypoint: rspec-entrypoint-next.sh
     env_file: ./docker/dev/test.env
     stdin_open: true
+    environment:
+      - BUNDLE_GEMFILE=NextGemfile
+      - RAILS_DB_NAME=workbooker_api_next_test
+  base_api_alpine:
+    image: base_api_alpine
+    build:
+      dockerfile: docker/dev/Dockerfile.alpine
+      context: .
+      args:
+        RUBY_VERSION: '2.7'
+        PG_CLI_VERSION: '13+225'
+        BUNDLER_VERSION: '2.3.7'
+        BUNDLE_GEMFILE: Gemfile
+    volumes:
+      - ./:/opt/workbook/
+      - ./tmp:/opt/workbook/tmp/
+      - gems:/opt/gems
   # Base image for all api ruby images
   base_api:
     image: base_api
@@ -53,10 +65,13 @@ services:
       args:
         RUBY_VERSION: '2.7'
         PG_CLI_VERSION: '13+225'
-        BUNDLER_VERSION: '2.2.31'
+        BUNDLER_VERSION: '2.3.7'
+    environment:
+      BUNDLE_GEMFILE: Gemfile
     volumes:
       - ./:/opt/workbook/
       - ./tmp:/opt/workbook/tmp/
+      - gems:/opt/gems
     entrypoint: /bin/true
   # Api ruby tests service
   # Visit http://localhost:4111 to see it working
@@ -74,6 +89,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./:/opt/workbook
+      - ./tmp:/opt/workbook/tmp/
+      - gems:/opt/gems
   # Api ruby service
   # Visit http://localhost:4110 to see it working
   api_ruby:
@@ -82,12 +101,15 @@ services:
     ports:
       - '4110:3000'
     env_file: ./docker/dev/dev.env
+    environment:
+      - BUNDLE_GEMFILE=Gemfile
     networks:
       - wbk-api-net
       - wbk-db-net
     volumes:
       - ./:/opt/workbook
-      - ./tmp:/opt/workbook/tmp//
+      - ./tmp:/opt/workbook/tmp/
+      - gems:/opt/gems
     depends_on:
       db:
         condition: service_healthy
@@ -110,6 +132,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
 networks:
   wbk-api-net:
     name: workbook-api-network
@@ -117,3 +140,4 @@ networks:
     name: workbook-db-network
 volumes:
   db: {}
+  gems: {}
