@@ -7,14 +7,20 @@ module GlobalRequestLogging
   included { around_action :global_request_logging }
 
   def global_request_logging
+    puts([format('%20s', '---' * 10), 'WORKBOOK API REQUEST LOGGER', '---' * 10].join)
     request_ip
     request_url
+    puts([format('%20s', '---' * 10), ' request headers', '---' * 10].join)
     http_request_headers
+    puts([format('%20s', '---' * 10), ' request parameters ', '---' * 10].join)
     http_request_params
     begin
       yield
     ensure
-      pp(JSON.parse(response.body)) unless response.body.empty?
+      unless response.body.empty?
+        puts([format('%20s', '---' * 10), ' response body', '---' * 10].join)
+        JSON.parse(response.body).each { |key, value| puts([format('%20s', ' : ', key), value].join) }
+      end
     end
   end
 
