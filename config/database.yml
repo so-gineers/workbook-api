@@ -13,3 +13,8 @@ development:
 
 test:
   <<: *default
+
+production:
+  url: <%= ENV.fetch('DATABASE_URL', '') %>
+  encoding: utf8
+  pool: 15
