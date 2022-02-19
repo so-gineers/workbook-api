@@ -1,0 +1,9 @@
+build:
+  docker:
+    web: docker/dev/Dockerfile
+run:
+  web: bundle exec rails server
+release:
+  image: worker
+  command:
+    - bundle exec rails db:migrate
