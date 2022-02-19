@@ -31,14 +31,13 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
     - name: Rubocop
-      run: |
-        gem install rubocop
-        rubocop
-      continue-on-error: true
+      run: bundle exec rubocop
     - name: Bundle audit
-      run: |
-        gem install bundler-audit
-        bundler-audit --update
+      run: bundle exec bundler-audit --update
+    - name: Strong versions
+      run: bundle exec strong_versions
+    - name: Brakeman
+      run: bundle exec brakeman
     - name: Rspec
       env:
         RAILS_ENV: test

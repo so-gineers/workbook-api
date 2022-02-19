@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-gem install 'bundler-audit'
-
-bundle-audit download
-bundle-audit check

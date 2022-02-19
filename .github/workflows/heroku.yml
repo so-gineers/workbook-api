@@ -19,6 +19,7 @@ jobs:
           # The variables prefixed by hd are sent to running app on heroku
           HD_RAILS_SECRET_KEY: notasecretbutwearejusttesting
           HD_RAILS_ENV: heroku
+          HD_RAILS_DB_NAME: workbook_api_production
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "workbook-api-demo"
