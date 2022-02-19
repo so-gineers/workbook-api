@@ -20,6 +20,7 @@ jobs:
           HD_RAILS_SECRET_KEY: notasecretbutwearejusttesting
           HD_RAILS_ENV: heroku
           HD_RAILS_DB_NAME: workbook_api_production
+          SENTRY_DSN: ${{secrets.SENTRY_DSN_HEROKU}}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "workbook-api-demo"
