@@ -1,12 +1,12 @@
 default: &default
-  adapter:   postgresql
-  database:  <%= ENV.fetch("RAILS_DB_NAME") { "workbooker" } %>
-  encoding:  unicode
-  host:      <%= ENV.fetch("RAILS_DB_HOST") { 'localhost' } %>
-  password:  <%= ENV.fetch("RAILS_DB_PASSWORD") { 'workbooker' } %>
-  port:      <%= ENV.fetch("RAILS_DB_PORT") { '3000' } %>
-  pool:      <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  user:      <%= ENV.fetch("RAILS_DB_USER") { 'workbooker' } %>
+  adapter: postgresql
+  database: <%= ENV.fetch("RAILS_DB_NAME") { "workbooker" } %>
+  encoding: unicode
+  host: <%= ENV.fetch("RAILS_DB_HOST") { 'localhost' } %>
+  password: <%= ENV.fetch("RAILS_DB_PASSWORD") { 'workbooker' } %>
+  port: <%= ENV.fetch("RAILS_DB_PORT") { 5432 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  user: <%= ENV.fetch("RAILS_DB_USER") { 'workbooker' } %>
 
 development:
   <<: *default
@@ -14,7 +14,9 @@ development:
 test:
   <<: *default
 
-production:
-  url: <%= ENV.fetch('DATABASE_URL', '') %>
-  encoding: utf8
+heroku:
+  adapter: postgresql
+  database: <%= ENV.fetch("RAILS_DB_NAME") { "workbooker" } %>
+  encoding: unicode
   pool: 15
+  url: <%= ENV.fetch('DATABASE_URL', '') %>
