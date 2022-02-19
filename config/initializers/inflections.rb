@@ -1,5 +1,3 @@
 # frozen_string_literal: true
 
-ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.acronym 'APP'
-end
+ActiveSupport::Inflector.inflections(:en) { |inflect| inflect.acronym 'APP' }

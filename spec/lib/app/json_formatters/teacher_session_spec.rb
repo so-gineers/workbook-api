@@ -11,7 +11,9 @@ RSpec.describe APP::JsonFormatters::TeacherSession do
     let(:expected_jwt_token) { 'just.testing.jwt' }
 
     before do
-      allow_any_instance_of(APP::Teachers::Tokens::Encoder).to receive(:encoder) { expected_jwt_token }
+      allow_any_instance_of(APP::Teachers::Tokens::Encoder).to receive(
+        :encoder
+      ) { expected_jwt_token }
     end
 
     it 'returns teacher id' do

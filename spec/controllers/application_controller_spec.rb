@@ -8,9 +8,7 @@ RSpec.describe ApplicationController do
   end
 
   describe 'adding new services' do
-    controller do
-      add_service :test_service, TestControllerLevelService
-    end
+    controller { add_service :test_service, TestControllerLevelService }
 
     it 'know that a service was added' do
       expect(controller).to respond_to(:test_service)

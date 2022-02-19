@@ -2,12 +2,12 @@
 
 FactoryBot.define do
   factory :db_teacher, class: 'Db::Teacher' do
-    person_title { 'mr'}
+    person_title { 'mr' }
     last_name { FFaker::NameSN.last_name }
     first_name { FFaker::NameSN.first_name_male }
     email { FFaker::Internet.email }
     phone_number { FFaker::PhoneNumberSN.mobile_number }
-    banned_at { }
+    banned_at {}
     password { 'workbook' }
 
     trait :with_status_active do

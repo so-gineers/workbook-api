@@ -26,10 +26,16 @@ module APP
         teacher = repository.find_by(email: session.identifier)
 
         raise(Exceptions::InvalidCredentials, session) unless teacher
-        raise(Exceptions::TeacherAccountLocked, session) if teacher.status.eql?('locked')
-        raise(Exceptions::TeacherAccountPending, session) if teacher.status.eql?('pending')
+        if teacher.status.eql?('locked')
+          raise(Exceptions::TeacherAccountLocked, session)
+        end
+        if teacher.status.eql?('pending')
+          raise(Exceptions::TeacherAccountPending, session)
+        end
 
-        return Results::Success.new(data: teacher) if teacher.authenticate(session.password)
+        if teacher.authenticate(session.password)
+          return Results::Success.new(data: teacher)
+        end
 
         raise(Exceptions::InvalidCredentials, session)
       end
@@ -38,10 +44,11 @@ module APP
       # @param jwt_decoder [string]
       # @raise [APP::Exceptions::TokenVide]
       def authenticate_with_token(token:, jwt_decoder:)
-        data, = jwt_decoder.decoder(
-          token_jwt: token,
-          secret_key: Rails.application.credentials.jwt_students_secret
-        )
+        data, =
+          jwt_decoder.decoder(
+            token_jwt: token,
+            secret_key: Rails.application.credentials.jwt_students_secret
+          )
 
         raise(Exceptions::TokenVide) if data.nil? || data.empty? || data.empty?
 

@@ -10,7 +10,12 @@ module APP
 
       attr_accessor :identifier, :password
 
-      validates :identifier, presence: true, length: { minimum: 6, maximum: 255 }
+      validates :identifier,
+                presence: true,
+                length: {
+                  minimum: 6,
+                  maximum: 255
+                }
       validates :password, presence: true, length: { minimum: 6, maximum: 255 }
 
       # Check that this session is valid and avoid touching the database for:

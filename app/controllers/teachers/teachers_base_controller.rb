@@ -3,9 +3,7 @@
 module Teachers
   # Base class for all teacher related controllers
   class TeachersBaseController < ::ApplicationController
-    unless Rails.env.production?
-      include GlobalRequestLogging
-    end
+    include GlobalRequestLogging unless Rails.env.production?
 
     attr_reader :current_teacher
 
@@ -21,17 +19,15 @@ module Teachers
     private
 
     def authenticate_teacher
-      @current_teacher = auth_service.authenticate_with_token(
-        token: crypted_token,
-        jwt_decoder: ::APP::Teachers::Tokens::Decoder.new
-      )
+      @current_teacher =
+        auth_service.authenticate_with_token(
+          token: crypted_token,
+          jwt_decoder: ::APP::Teachers::Tokens::Decoder.new
+        )
     end
 
     def not_authorized
-      render(
-        json: { message: 'Accès non autorisé' },
-        status: :unauthorized
-      )
+      render(json: { message: 'Accès non autorisé' }, status: :unauthorized)
     end
 
     def crypted_token

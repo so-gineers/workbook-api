@@ -5,7 +5,8 @@ module TeacherSessionTestTables
       expected_result: false
     ),
     OpenStruct.new(
-      session: OpenStruct.new(identifier: 'valid@identifier.com', password: nil),
+      session:
+        OpenStruct.new(identifier: 'valid@identifier.com', password: nil),
       expected_result: false
     ),
     OpenStruct.new(
@@ -33,7 +34,8 @@ module TeacherSessionTestTables
       expected_result: false
     ),
     OpenStruct.new(
-      session: OpenStruct.new(identifier: 'bad@identifier.com', password: 'pass'),
+      session:
+        OpenStruct.new(identifier: 'bad@identifier.com', password: 'pass'),
       expected_result: false
     ),
     OpenStruct.new(

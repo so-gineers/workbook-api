@@ -12,7 +12,9 @@ module Teachers
 
     rescue_from ::APP::Exceptions::InvalidCredentials do
       render(
-        json: { message: 'Utilisateur introuvable' },
+        json: {
+          message: 'Utilisateur introuvable'
+        },
         status: :precondition_failed
       )
     end
@@ -27,6 +29,7 @@ module Teachers
         render json: {}, status: :unprocessable_entity
       end
     end
+
     private
 
     def new_session

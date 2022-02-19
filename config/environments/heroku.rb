@@ -17,7 +17,8 @@ Rails.application.configure do
   config.active_support.report_deprecations = false
   config.log_formatter = ::Logger::Formatter.new
   require 'syslog/logger'
-  config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new('wbk-plat'))
+  config.logger =
+    ActiveSupport::TaggedLogging.new(Syslog::Logger.new('wbk-plat'))
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger = ActiveSupport::Logger.new($stdout)

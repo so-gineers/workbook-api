@@ -9,11 +9,11 @@ class CreateDbTeachers < ActiveRecord::Migration[6.1]
       t.enum :status, as: :teacher_status, default: 'pending', index: true
       t.enum :person_title, as: :person_title, null: false
       t.datetime :banned_at
-      t.string :email, null: false, index: { unique: true}
+      t.string :email, null: false, index: { unique: true }
       t.string :first_name, null: false
       t.string :last_name, null: false
       t.datetime :locked_at
-      t.string :phone_number, index: { unique: true}, null: false
+      t.string :phone_number, index: { unique: true }, null: false
       t.string :password_digest
 
       t.timestamps

@@ -9,7 +9,9 @@ module APP
       end
       field :token do |t|
         encoder = Teachers::Tokens::Encoder.new(teacher: t)
-        encoder.encoder(secret_key: Rails.application.credentials.jwt_students_secret)
+        encoder.encoder(
+          secret_key: Rails.application.credentials.jwt_students_secret
+        )
       end
     end
   end
