@@ -1,47 +1,5 @@
 version: '3.9'
 services:
-  # Swagger editor for teachers
-  # Visit http://localhost:3517 to see it working
-  swagger_editor_teachers:
-    image: swaggerapi/swagger-editor
-    environment:
-      SWAGGER_FILE: /swagger.yml
-    volumes:
-      - ./swagger/teachers/api.yml:/swagger.yml
-      - ./swagger/teachers/paths:/paths
-    ports:
-      - "3517:8080"
-  # Swagger editor for students
-  # Visit http://localhost:3516 to see it working
-  swagger_editor_students:
-    image: swaggerapi/swagger-editor
-    environment:
-      SWAGGER_FILE: /swagger.yml
-    volumes:
-      - ./swagger/students/api.yml:/swagger.yml
-      - ./swagger/students/paths:/paths
-    ports:
-      - "3516:8080"
-  # Api ruby next tests service
-  # Visit  http://localhost:2522 to see it working
-  api_ruby_next_tests:
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./:/opt/workbook
-      - ./tmp:/opt/workbook/tmp/
-    image: base_api
-    networks:
-      - wbk-db-net
-    ports:
-      - '2522:3000'
-    entrypoint: rspec-entrypoint-next.sh
-    env_file: ./docker/dev/next-test.env
-    stdin_open: true
-    environment:
-      - BUNDLE_GEMFILE=NextGemfile
-      - RAILS_DB_NAME=workbooker_api_next_test
   base_api_alpine:
     image: base_api_alpine
     build:
@@ -57,6 +15,19 @@ services:
       - ./tmp:/opt/workbook/tmp/
       - gems:/opt/gems
   # Base image for all api ruby images
+  base_api_ruby3:
+    image: base_api
+    build:
+      dockerfile: docker/dev/Dockerfile
+      context: .
+      args:
+        RUBY_VERSION: '3.0.0'
+        PG_CLI_VERSION: '13+225'
+        BUNDLER_VERSION: '2.3.7'
+    volumes:
+      - ./:/opt/workbook/
+      - ./tmp:/opt/workbook/tmp/
+    entrypoint: /bin/true
   base_api:
     image: base_api
     build:
@@ -66,78 +37,10 @@ services:
         RUBY_VERSION: '2.7'
         PG_CLI_VERSION: '13+225'
         BUNDLER_VERSION: '2.3.7'
-    environment:
-      BUNDLE_GEMFILE: Gemfile
     volumes:
       - ./:/opt/workbook/
       - ./tmp:/opt/workbook/tmp/
       - gems:/opt/gems
     entrypoint: /bin/true
-  # Api ruby tests service
-  # Visit http://localhost:4111 to see it working
-  api_ruby_tests:
-    image: base_api
-    ports:
-      - '4111:3000'
-    entrypoint: rspec-entrypoint.sh
-    env_file: ./docker/dev/test.env
-    stdin_open: true
-    tty: true
-    networks:
-      - wbk-api-net
-      - wbk-db-net
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./:/opt/workbook
-      - ./tmp:/opt/workbook/tmp/
-      - gems:/opt/gems
-  # Api ruby service
-  # Visit http://localhost:4110 to see it working
-  api_ruby:
-    image: base_api
-    container_name: wbk_api_ruby
-    ports:
-      - '4110:3000'
-    env_file: ./docker/dev/dev.env
-    environment:
-      - BUNDLE_GEMFILE=Gemfile
-    networks:
-      - wbk-api-net
-      - wbk-db-net
-    volumes:
-      - ./:/opt/workbook
-      - ./tmp:/opt/workbook/tmp/
-      - gems:/opt/gems
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    image: postgres:14
-    container_name: wbk_postgres_db
-    volumes:
-      - db:/var/lib/postgresql/data
-    ports:
-      - '5432'
-    networks:
-      - wbk-db-net
-    environment:
-      - POSTGRES_DB=workbooker_api_development
-      - POSTGRES_USER=xaragne
-      - POSTGRES_PASSWORD=xaragne
-    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-U", "xaragne"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-networks:
-  wbk-api-net:
-    name: workbook-api-network
-  wbk-db-net:
-    name: workbook-db-network
 volumes:
-  db: {}
   gems: {}
