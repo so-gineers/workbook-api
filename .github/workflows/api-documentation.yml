@@ -23,7 +23,7 @@ jobs:
         with:
           install: true
       - name: Log in to github registry
-        run:  |
+        run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Login to Quay.io Registry
         run: docker login -u "${{ secrets.QUAY_USERNAME }}" -p "${{ secrets.QUAY_PASSWORD }}" Quay.io
