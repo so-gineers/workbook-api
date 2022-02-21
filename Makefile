@@ -13,7 +13,9 @@ build_base_images_for_ruby3:
 # run make start_guard 
 start_guard:
 	docker compose -f ./docker-compose-rails.yml up api_ruby_tests api_ruby_next_tests
-make start_swagger:
+start_swagger:
 	docker compose -f ./docker/compose/swagger.yml up 
   echo 'You can visit http://localhost_3527 to edit' 
 
+refresh_bundles:
+	BUNDLE_GEMFILE=NextGemfile bundle install && bundle install
