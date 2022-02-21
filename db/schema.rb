@@ -10,28 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_13_092347) do
-
+ActiveRecord::Schema[7.0].define(version: 2021_08_13_092347) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  # These are custom enum types that must be created before they can be used in the schema definition
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "person_title", ["mr", "mme"]
   create_enum "teacher_status", ["pending", "active", "banned", "locked"]
 
   create_table "db_teachers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.enum "status", default: "pending", as: "teacher_status"
-    t.enum "person_title", null: false, as: "person_title"
-    t.datetime "banned_at"
+    t.enum "status", default: "pending", enum_type: "teacher_status"
+    t.enum "title", default: "mr", null: false, enum_type: "person_title"
+    t.datetime "banned_at", precision: nil
     t.string "email", null: false
     t.string "first_name", null: false
     t.string "last_name", null: false
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: nil
     t.string "phone_number", null: false
     t.string "password_digest"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_db_teachers_on_email", unique: true
     t.index ["phone_number"], name: "index_db_teachers_on_phone_number", unique: true
     t.index ["status"], name: "index_db_teachers_on_status"
