@@ -423,7 +423,7 @@ DEPENDENCIES
   simplecov-lcov (~> 0.8.0)
   solargraph (~> 0.44.2)
   spring (~> 2.1)
-  strong_migrations (~> 0.8)
+  strong_migrations (~> 0.8.0)
   strong_versions (~> 0.4.5)
   undercover (~> 0.4.4)
 
