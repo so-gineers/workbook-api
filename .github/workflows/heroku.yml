@@ -23,6 +23,7 @@ jobs:
           heroku_app_name: "workbook-api-demo"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
+          dontuseforce: true
           stack: "container"
           docker_build_args: |
             RUBY_VERSION
