@@ -30,7 +30,7 @@ BAD_LOGIN_TABLES = [
     'bad_password',
     :precondition_failed
   )
-]
+].freeze
 
 RSpec.describe Teachers::SessionsController do
   describe '#create' do

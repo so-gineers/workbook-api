@@ -7,6 +7,22 @@ module GlobalRequestLogging
   included { around_action :global_request_logging }
 
   def global_request_logging
+    print_header
+    http_request_headers
+    http_request_params
+    begin
+      yield
+    ensure
+      unless response.body.empty?
+        puts([format('%20s', '---' * 10), ' response body', '---' * 10].join)
+        JSON.parse(response.body).each { |value| puts(value) }
+      end
+    end
+  end
+
+  private
+
+  def print_header
     puts(
       [
         format('%20s', '---' * 10),
@@ -16,31 +32,17 @@ module GlobalRequestLogging
     )
     request_ip
     request_url
-    puts([format('%20s', '---' * 10), ' request headers', '---' * 10].join)
-    http_request_headers
-    puts([format('%20s', '---' * 10), ' request parameters ', '---' * 10].join)
-    http_request_params
-    begin
-      yield
-    ensure
-      unless response.body.empty?
-        puts([format('%20s', '---' * 10), ' response body', '---' * 10].join)
-        JSON
-          .parse(response.body)
-          .each { |key, value| puts([format('%20s', ' : ', key), value].join) }
-      end
-    end
   end
 
-  private
-
   def http_request_params
+    puts([format('%20s', '---' * 10), ' request headers', '---' * 10].join)
     params.each_key do |key|
       puts([format('%20s', key.to_s), ':', params[key].inspect].join)
     end
   end
 
   def http_request_headers
+    puts([format('%20s', '---' * 10), ' request parameters ', '---' * 10].join)
     request
       .headers
       .env

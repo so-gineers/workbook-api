@@ -26,16 +26,10 @@ module APP
         teacher = repository.find_by(email: session.identifier)
 
         raise(Exceptions::InvalidCredentials, session) unless teacher
-        if teacher.status.eql?('locked')
-          raise(Exceptions::TeacherAccountLocked, session)
-        end
-        if teacher.status.eql?('pending')
-          raise(Exceptions::TeacherAccountPending, session)
-        end
+        raise(Exceptions::TeacherAccountLocked, session) if teacher.status.eql?('locked')
+        raise(Exceptions::TeacherAccountPending, session) if teacher.status.eql?('pending')
 
-        if teacher.authenticate(session.password)
-          return Results::Success.new(data: teacher)
-        end
+        return Results::Success.new(data: teacher) if teacher.authenticate(session.password)
 
         raise(Exceptions::InvalidCredentials, session)
       end

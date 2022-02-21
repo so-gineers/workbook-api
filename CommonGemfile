@@ -41,11 +41,14 @@ group :tools do
   gem 'guard-migrate', '~> 2.0'
   gem 'guard-rubocop', '~> 1.5'
   gem 'guard-rspec', '~> 4.7'
-  gem 'prettier'
+  gem 'prettier', '~> 2.0'
   gem 'ruby-debug-ide', '~> 0.7.3', require: false
   gem 'strong_versions','~> 0.4.5'
   gem 'rails_best_practices', '~> 1.23'
+  gem 'rubocop', '~> 1.25'
+  gem 'rubocop-rails', '~> 2.13'
+  gem 'rubocop-rspec', '~> 2.8'
   gem 'rubycritic', '~> 4.6'
-  gem 'strong_migrations', '~> 0.7.8'
+  gem 'strong_migrations', '~> 0.8'
   gem 'solargraph', '~> 0.44.2', require: false
 end

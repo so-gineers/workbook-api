@@ -6,10 +6,10 @@ Sentry.init do |config|
   config.traces_sample_rate = 0.5
 
   # or
-  config.traces_sampler = lambda { |context| true }
+  config.traces_sampler = ->(_context) { true }
   config.background_worker_threads = 5
   config.before_send =
-    lambda do |event, hint|
+    lambda do |event, _hint|
       ActiveSupport::ParameterFilter
         .new(Rails.application.config.filter_parameters)
         .filter(event.to_hash)

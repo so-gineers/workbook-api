@@ -2,6 +2,7 @@
 
 module APP
   module JsonFormatters
+    # JSON formatter for teacher session
     class TeacherSession < Blueprinter::Base
       field :id
       field :display_name do |t|

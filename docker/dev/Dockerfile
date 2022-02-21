@@ -14,7 +14,7 @@ LABEL version="1.0.0"
 RUN groupadd -r worbooker -g 1000 && \
     useradd -u 1000 -r -g worbooker -s /sbin/nologin -c "Workbook user" worbooker \
     && apt-get update --no-install-recommends -qq  \
-    && apt-get install -y cmake postgresql-client=$PG_CLI_VERSION --no-install-recommends \
+    && apt-get install -y postgresql-client=$PG_CLI_VERSION cmake --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && echo "gem: --no-ri --no-rdoc --no-document" > ~/.gemrc \

@@ -20,9 +20,7 @@ class ApplicationController < ActionController::API
   #   end
   def self.add_service(name, service_class)
     define_method name do
-      if instance_variable_defined?("@#{name}")
-        return instance_variable_get("@#{name}")
-      end
+      return instance_variable_get("@#{name}") if instance_variable_defined?("@#{name}")
 
       instance_variable_set "@#{name}", service_class.new
     end
