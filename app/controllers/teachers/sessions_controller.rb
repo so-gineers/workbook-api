@@ -6,7 +6,7 @@ module Teachers
     add_service :auth_service, ::APP::Teachers::Authentification
     skip_before_action :authenticate_teacher
 
-    rescue_from ::APP::Exceptions::SessionInvalide do
+    rescue_from ::APP::Exceptions::InvalidSession do
       render json: {}, status: :precondition_failed
     end
 
