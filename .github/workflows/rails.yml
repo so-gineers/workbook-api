@@ -32,6 +32,7 @@ jobs:
           bundler-cache: true
       - name: Rubocop
         run: bundle exec rubocop
+        continue-on-error: true
       - name: Bundle audit
         run: bundle exec bundler-audit --update
       - name: Strong versions
