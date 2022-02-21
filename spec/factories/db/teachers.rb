@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :db_teacher, class: 'Db::Teacher' do
-    person_title { 'mr' }
+    title { 'mr' }
     last_name { FFaker::NameSN.last_name }
     first_name { FFaker::NameSN.first_name_male }
     email { FFaker::Internet.email }

@@ -34,7 +34,7 @@ module APP
         {}
       end
 
-      def detail 
+      def detail
         raise NotImplementedError
       end
 
