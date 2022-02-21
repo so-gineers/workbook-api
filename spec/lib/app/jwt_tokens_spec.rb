@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Jetons' do
+RSpec.describe 'Tokens' do
   let(:decodeur) { ::APP::JwtTokens::Decoder.new }
   let(:encoder) { ::APP::JwtTokens::Encoder.new }
 
-  describe 'decoder' do
+  describe 'decode' do
     pending
   end
 
-  describe 'encoder' do
-    describe '#encoder' do
+  describe 'encode' do
+    describe '#encode' do
       let(:secret_key) { 'secret' }
       let(:operation) { encoder.encoder(secret_key: secret_key) }
-      let(:error) { ::APP::Exceptions::TokenVide }
+      let(:error) { ::APP::Exceptions::EmptyToken }
 
       it 'fait appel à la gem JWT' do
         encoder.data = { id: 'pathe' }

@@ -6,10 +6,10 @@ module APP
       # @param detail [string]
       # @param status [integer]
       # @param source [hash]
-      def initialize(title: nil, detail: nil, status: nil, source: {})
-        @title = title || 'Something went wrong'
-        @detail = detail || 'The platform was not able to complete your web request'
-        @status = status || 500
+      def initialize
+        @title = title
+        @detail = detail
+        @status = status
         @source = source.deep_stringify_keys
       end
 
@@ -30,7 +30,21 @@ module APP
         to_h.to_s
       end
 
-      attr_reader :title, :detail, :status, :source
+      def source
+        {}
+      end
+
+      def detail 
+        raise NotImplementedError
+      end
+
+      def title
+        raise NotImplementedError
+      end
+
+      def status
+        500
+      end
     end
   end
 end

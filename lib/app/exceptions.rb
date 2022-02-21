@@ -2,33 +2,96 @@ module APP
   # References
   # https://driggl.com/blog/a/handling-exceptions-in-rails-applications
   module Exceptions
-    class TeacherAccountLocked < ApiError
-      def initialize
-        super(
-          title: 'Account Locked',
-          status: 401,
-          detail: message || 'Your account is locked',
-          source: { pointer: '/request/headers/authorization' }
-        )
+    class TeacherAccountLocked < ApiError 
+      def status
+        422
+      end 
+
+      def title
+        "Account locked"
+      end
+
+      def detail
+        "Your account is locked please contact support."
       end
     end
-
     class TeacherAccountPending < ApiError
-    end
+      def status
+        422
+      end
 
+      def title
+        "Account locked"
+      end
+
+      def detail
+        "Your account is locked please contact support."
+      end
+    end
     class IdentifiantInconnu < ApiError
-    end
+      def status
+        422
+      end
 
+      def title
+        "Account locked"
+      end
+
+      def detail
+        "Your account is locked please contact support."
+      end
+    end
     class IdentifiantsIndefinis < ApiError
-    end
+      def status
+        422
+      end
 
+      def title
+        "Account locked"
+      end
+
+      def detail
+        "Your account is locked please contact support."
+      end
+    end
     class InvalidCredentials < ApiError
-    end
+      def status
+        422
+      end
 
+      def title
+        "Account locked"
+      end
+
+      def detail
+        "Your account is locked please contact support."
+      end
+    end
     class InvalidSession < ApiError
-    end
+      def status
+        422
+      end
 
+      def title
+        "Account locked"
+      end
+
+      def detail
+        "Your account is locked please contact support."
+      end
+    end
     class EmptyToken < ApiError
+      def status
+        422
+      end
+
+      def title
+        "Account locked"
+      end
+
+      def detail
+        "Your account is locked please contact support."
+      end
     end
   end
 end

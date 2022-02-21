@@ -21,17 +21,17 @@ module APP
       #    APP::Exceptions::TeacherAccountPending,
       #    ]
       def authenticate(session:)
-        raise(Exceptions::SessionInvalide) unless session.acceptable?
+        raise(Exceptions::InvalidSession) unless session.acceptable?
 
         teacher = repository.find_by(email: session.identifier)
 
-        raise(Exceptions::InvalidCredentials, session) unless teacher
-        raise(Exceptions::TeacherAccountLocked, session) if teacher.status.eql?('locked')
-        raise(Exceptions::TeacherAccountPending, session) if teacher.status.eql?('pending')
+        raise Exceptions::InvalidCredentials unless teacher
+        raise Exceptions::TeacherAccountLocked if teacher.status.eql?('locked')
+        raise Exceptions::TeacherAccountPending if teacher.status.eql?('pending')
 
         return Results::Success.new(data: teacher) if teacher.authenticate(session.password)
 
-        raise(Exceptions::InvalidCredentials, session)
+        raise Exceptions::InvalidCredentials
       end
 
       # @param token [String]

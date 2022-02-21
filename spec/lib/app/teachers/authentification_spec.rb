@@ -20,7 +20,7 @@ RSpec.describe APP::Teachers::Authentification do
       let(:identifier) {}
 
       it 'raises an exception' do
-        expect { result }.to raise_error(::APP::Exceptions::SessionInvalide)
+        expect { result }.to raise_error(::APP::Exceptions::InvalidSession)
       end
     end
 

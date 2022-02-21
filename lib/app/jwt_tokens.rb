@@ -16,7 +16,7 @@ module APP
       # Encode the payload that was set in APP::JwtTokens::Encoder#data
       # @param secret_key [String] a very secret key used to encode
       def encoder(secret_key:)
-        raise ::APP::Exceptions::TokenVide unless invalid_data?
+        raise ::APP::Exceptions::EmptyToken unless invalid_data?
 
         JWT.encode(data, secret_key, HASHING_ALGORITHM)
       end
