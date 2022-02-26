@@ -1,3 +1,7 @@
+setup:
+  config:
+    WORKBOOK_APP_HOST: https://workbook-api-staging-001.herokuapp.com/
+    RAILS_MASTER_KEY: arailsmasterkey
 build:
   config:
     RUBY_VERSION: 2.7.5
