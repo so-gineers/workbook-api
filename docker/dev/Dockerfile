@@ -29,11 +29,11 @@ ENV LANG=C.UTF-8 \
 
 WORKDIR /opt/workbook
 
-COPY CommonGemfile \
-     Gemfile \
-     Gemfile.lock \
-     NextGemfile \
-     NextGemfile.lock /opt/workbook/
+COPY ./CommonGemfile \
+     ./Gemfile \
+     ./Gemfile.lock \
+     ./NextGemfile \
+     ./NextGemfile.lock /opt/workbook/
 
 WORKDIR /opt/workbook/
 
