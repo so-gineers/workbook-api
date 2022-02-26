@@ -23,7 +23,7 @@ jobs:
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
-          dontuseforce: false
+          dontuseforce: 1
           stack: "container"
           docker_build_args: |
             RUBY_VERSION
