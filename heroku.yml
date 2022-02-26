@@ -4,6 +4,6 @@ build:
 run:
   web: bundle exec rails server
 release:
-  image: worker
+  image: web
   command:
     - bundle exec rails db:migrate
