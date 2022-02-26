@@ -5,7 +5,7 @@ build:
     BUNDLER_VERSION: 2.2.31
     BUNDLE_GEMFILE: Gemfile
   docker:
-    web: docker/dev/Dockerfile
+    web: Dockerfile.dev
 run:
   web: bundle exec rails server
 release:
