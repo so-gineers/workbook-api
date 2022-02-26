@@ -23,11 +23,11 @@ ActiveRecord::Schema[7.0].define(version: 2021_08_13_092347) do
   create_table "db_teachers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.enum "status", default: "pending", enum_type: "teacher_status"
     t.enum "title", default: "mr", null: false, enum_type: "person_title"
-    t.datetime "banned_at", precision: nil
+    t.datetime "banned_at"
     t.string "email", null: false
     t.string "first_name", null: false
     t.string "last_name", null: false
-    t.datetime "locked_at", precision: nil
+    t.datetime "locked_at"
     t.string "phone_number", null: false
     t.string "password_digest"
     t.datetime "created_at", null: false
