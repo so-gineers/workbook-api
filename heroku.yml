@@ -6,10 +6,10 @@ build:
     BUNDLE_GEMFILE: Gemfile
   docker:
     web: Dockerfile.dev
-run:
-  web: bundle exec rails server
+
 release:
   image: web
   command:
     - bundle exec rails db:migrate
-    - bundle exec rails server
+run:
+  web: bundle exec rails server
