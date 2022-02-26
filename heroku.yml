@@ -1,13 +1,11 @@
-setup:
-  config:
-    WORKBOOK_APP_HOST: https://workbook-api-staging-001.herokuapp.com/
-    RAILS_MASTER_KEY: arailsmasterkey
 build:
   config:
     RUBY_VERSION: 2.7.5
     PG_CLI_VERSION: 13+225
     BUNDLER_VERSION: 2.3.7
     BUNDLE_GEMFILE: Gemfile
+    WORKBOOK_APP_HOST: https://workbook-api-staging-001.herokuapp.com/
+    RAILS_MASTER_KEY: arailsmasterkey
   docker:
     web: Dockerfile.dev
 
