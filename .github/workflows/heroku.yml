@@ -13,17 +13,17 @@ jobs:
           PG_CLI_VERSION: 13+225
           BUNDLER_VERSION: 2.2.31
           BUNDLE_GEMFILE: Gemfile
-          # The variables prefixed by hd are sent to running app on heroku
           HD_RAILS_SECRET_KEY: notasecretbutwearejusttesting
           HD_RAILS_ENV: heroku
           HD_RAILS_DB_NAME: workbook_api_production
-          SENTRY_DSN: ${{secrets.SENTRY_DSN_HEROKU}}
+          HD_SENTRY_DSN: ${{secrets.SENTRY_DSN_HEROKU}}
+          HD_WORKBOK_HOSTS: 'workbook-api-demo.herokuapp.com'
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "workbook-api-demo"
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
-          dontuseforce: true
+          dontuseforce: false
           stack: "container"
           docker_build_args: |
             RUBY_VERSION
