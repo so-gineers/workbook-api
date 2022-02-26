@@ -1,4 +1,9 @@
 build:
+  config:
+    RUBY_VERSION: 2.7.5
+    PG_CLI_VERSION: 13+225
+    BUNDLER_VERSION: 2.2.31
+    BUNDLE_GEMFILE: Gemfile
   docker:
     web: docker/dev/Dockerfile
 run:
