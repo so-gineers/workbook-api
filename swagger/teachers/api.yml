@@ -10,6 +10,8 @@ info:
   contact:
     email: "workbook@so-gineers.com"
 servers:
+  - url: "https://workbook-api.ml"
+    description: "swarm-cluster-dev"
   - url: "https://workbook-api-demo.herokuapp.com"
     description: "heroku"
   - url: "http://localhost:3312"
