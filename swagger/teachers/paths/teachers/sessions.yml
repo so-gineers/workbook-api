@@ -2,26 +2,37 @@ post:
   tags:
     - "teachers"
   summary: "teachers login endpoint"
-  description: ""
-  consumes:
-    - "application/json"
-  produces:
-    - "application/json"
-  parameters:
-    - in: "body"
-      name: "body"
-      description: "Credentials used to login the teacher"
-      required: true
-      schema:
-        type: "object"
-        properties:
-          identifier:
-            type: "string"
-          password:
-            type: "string"
+  description: "Allow teachers to authenticate with the workbook api"
+  requestBody:
+    description: "Credentials used to login the teacher"
+    required: true
+    content:
+      "application/json":
+        schema:
+          properties:
+            identifier:
+              type: string
+              description: email address or phone number of the teacher
+            password:
+              type: string
+              description: you know what this means right ?
   responses:
+    412:
+      description: "Precondition failed"
     401:
       description: "Teacher not authorized"
+    422:
+      description: "Cannot authenticate with given credentials"
     200:
       description: "Teacher logged in successfully"
-  security:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+              id:
+                type: string
+              name:
+                type: string

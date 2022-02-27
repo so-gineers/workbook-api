@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+# Swagger editor for teachers
+  # Visit http://localhost:3517 to see it working
+  swagger_editor_teachers:
+    image: swaggerapi/swagger-editor
+    environment:
+      SWAGGER_FILE: /swagger.yml
+    volumes:
+      - ./swagger/teachers/api.yml:/swagger.yml
+      - ./swagger/teachers/paths:/paths
+    ports:
+      - "3517:8080"
+  # Swagger editor for students
+  # Visit http://localhost:3516 to see it working
+  swagger_editor_students:
+    image: swaggerapi/swagger-editor
+    environment:
+      SWAGGER_FILE: /swagger.yml
+    volumes:
+      - ./swagger/students/api.yml:/swagger.yml
+      - ./swagger/students/paths:/paths
+    ports:
+      - "3516:8080"

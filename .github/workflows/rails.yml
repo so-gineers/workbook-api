@@ -8,50 +8,53 @@ jobs:
     strategy:
       matrix:
         include:
-          - ruby-version: '2.7.4'
+          - ruby-version: "2.7.4"
             bundle_gemfile: Gemfile
-          - ruby-version: '2.7.4'
+          - ruby-version: "2.7.4"
             bundle_gemfile: NextGemfile
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: ${{ runner.os }}-gems-
-    - uses: Harmon758/postgresql-action@v1.0.0
-      with:
-        postgresql version: latest
-        postgresql db: workook_api_test
-        postgresql user: workook_api_test
-        postgresql password: workook_api_test
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true
-    - name: Rubocop
-      run: |
-        gem install rubocop
-        rubocop
-      continue-on-error: true
-    - name: Bundle audit
-      run: |
-        gem install bundler-audit
-        bundler-audit --update
-    - name: Run tests on Rails/StableBranch
-      env:
-        RAILS_ENV: test
-        RAILS_DB_NAME: workook_api_test
-        RAILS_DB_USER: workook_api_test
-        RAILS_DB_HOST: localhost
-        RAILS_DB_PORT: 5432
-        RAILS_DB_PASSWORD: workook_api_test
-        BUNDLE_GEMFILE: ${{ matrix.bundle_gemfile }}
-      run: |
-        bundle install
-        bundle exec rails db:create
-        bundle exec rails db:migrate
-        bundle exec rails db:rollback
-        bundle exec rails db:migrate
-        bundle exec rspec --fail-fast
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: ${{ runner.os }}-gems-
+      - uses: Harmon758/postgresql-action@v1.0.0
+        with:
+          postgresql version: latest
+          postgresql db: workook_api_test
+          postgresql user: workook_api_test
+          postgresql password: workook_api_test
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Rubocop
+        run: bundle exec rubocop
+        continue-on-error: true
+      - name: Bundle audit
+        run: bundle exec bundler-audit --update
+      - name: Strong versions
+        run: bundle exec strong_versions
+      - name: Brakeman
+        run: bundle exec brakeman
+      - name: Rspec
+        env:
+          RAILS_ENV: test
+          RAILS_DB_NAME: workook_api_test
+          RAILS_DB_USER: workook_api_test
+          RAILS_DB_HOST: localhost
+          RAILS_DB_PORT: 5432
+          RAILS_DB_PASSWORD: workook_api_test
+          BUNDLE_GEMFILE: ${{ matrix.bundle_gemfile }}
+        run: |
+          bundle install
+          bundle exec rails db:create db:migrate
+          bundle exec rspec
+      - uses: codecov/codecov-action@v2
+        name: Code coverage
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true

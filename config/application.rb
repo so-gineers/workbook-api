@@ -23,14 +23,11 @@ Bundler.require(*Rails.groups)
 module WorkookApi
   # Application class
   class Application < Rails::Application
-    if Rails::VERSION::MAJOR >= 7
-      config.load_defaults 7.0
-    else
-      config.load_defaults 6.1
-    end
-
+    config.load_defaults 7.0
+    config.active_record.schema_format = :ruby
     config.api_only = true
-
+    config.autoload_paths << config.root.join('lib')
+    config.eager_load_paths << config.root.join('lib')
     config.generators do |generator|
       generator.orm :active_record, primary_key_type: :uuid
     end

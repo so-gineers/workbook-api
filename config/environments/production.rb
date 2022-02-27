@@ -22,7 +22,7 @@ Rails.application.configure do
   # config.action_cable.url = "wss://example.com/cable"
   # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
 
-  # config.force_ssl = true
+  config.force_ssl = true
 
   config.log_level = :info
 
@@ -44,7 +44,8 @@ Rails.application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   require 'syslog/logger'
-  config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new('workbook-platform'))
+  config.logger =
+    ActiveSupport::TaggedLogging.new(Syslog::Logger.new('workbook-platform'))
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger = ActiveSupport::Logger.new($stdout)
@@ -57,4 +58,8 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  ENV['WORKBOOK_APP_HOSTS'].split.each do |host|
+    config.hosts << host
+  end
 end

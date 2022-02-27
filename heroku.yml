@@ -1,0 +1,17 @@
+build:
+  config:
+    RUBY_VERSION: 2.7.5
+    PG_CLI_VERSION: 13+225
+    BUNDLER_VERSION: 2.3.7
+    BUNDLE_GEMFILE: Gemfile
+    WORKBOOK_APP_HOSTS: https://workbook-api-staging-001.herokuapp.com/
+    RAILS_MASTER_KEY: arailsmasterkey
+  docker:
+    web: Dockerfile.dev
+
+release:
+  image: web
+  command:
+    - bundle exec rails db:migrate
+run:
+  web: bundle exec rails server

@@ -1,4 +1,3 @@
 # /usr/bin/sh
 
-docker-compose up --build -d api_ruby_tests
-docker-compose exec api_ruby_tests bundle exec guard
+docker-compose up api_ruby_tests api_ruby_next_tests

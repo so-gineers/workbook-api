@@ -1,10 +1,12 @@
 AllCops:
   NewCops: enable
-  SuggestExtensions: false
   Exclude:
     - db/schema.rb
     - bin/*
     - db/migrate/*
+    - db/old-migrate/*
+    - app/old-controllers/*
+
 
 Layout/LineLength:
   Max: 120
@@ -12,12 +14,14 @@ Layout/LineLength:
 Lint/EmptyBlock:
   Enabled: false
 
-Style/OpenStructUse:
-  Enabled: false
-
 Lint/MissingSuper:
   Exclude:
-    - app/lib/app/teachers/tokens/encoder.rb
+    - lib/app/teachers/tokens/encoder.rb
+    - lib/app/exceptions/api_error.rb
+
+Metrics/AbcSize:
+  Exclude:
+    - app/controllers/concerns/global_request_logging.rb
 
 Metrics/BlockLength:
   Exclude:
@@ -27,10 +31,13 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Exclude:
     - db/migrate/*
+  Max: 20
 
 Style/Documentation:
-  Exclude:
-    - db/migrate/*
+  Enabled: false 
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/OpenStructUse:
   Enabled: false

@@ -1,0 +1,90 @@
+version: '3.9'
+services:
+  # Api ruby service
+  # Visit http://localhost:4110 to see it working
+  api_ruby:
+    image: base_api
+    container_name: wbk_api_ruby
+    ports:
+      - '4110:3000'
+    env_file: ./docker/dev/dev.env
+    environment:
+      - BUNDLE_GEMFILE=Gemfile
+    networks:
+      - wbk-api-net
+      - wbk-db-net
+    volumes:
+      - ./:/opt/workbook
+      - ./tmp:/opt/workbook/tmp/
+      - gems:/opt/gems
+    depends_on:
+      db:
+        condition: service_healthy
+  # Api ruby next tests service
+  # Visit  http://localhost:2522 to see it working
+  api_ruby_next_tests:
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./:/opt/workbook
+      - ./tmp:/opt/workbook/tmp/
+    image: base_api
+    networks:
+      - wbk-db-net
+    ports:
+      - '2522:3000'
+    entrypoint: rspec-entrypoint-next.sh
+    env_file: ./docker/dev/next-test.env
+    stdin_open: true
+    environment:
+      - BUNDLE_GEMFILE=NextGemfile
+      - RAILS_DB_NAME=workbooker_api_next_test
+  # Api ruby tests service
+  # Visit http://localhost:4111 to see it working
+  api_ruby_tests:
+    image: base_api
+    ports:
+      - '4111:3000'
+    entrypoint: rspec-entrypoint.sh
+    env_file: ./docker/dev/test.env
+    stdin_open: true
+    tty: true
+    networks:
+      - wbk-api-net
+      - wbk-db-net
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./:/opt/workbook
+      - ./tmp:/opt/workbook/tmp/
+      - gems:/opt/gems
+  db:
+    image: postgres:14
+    container_name: wbk_postgres_db
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - '5432'
+    networks:
+      - wbk-db-net
+    environment:
+      - POSTGRES_DB=workbooker_api_development
+      - POSTGRES_USER=xaragne
+      - POSTGRES_PASSWORD=xaragne
+    command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U", "xaragne"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  wbk-api-net:
+    name: workbook-api-network
+  wbk-db-net:
+    name: workbook-db-network
+volumes:
+  db: {}
+  gems: {}

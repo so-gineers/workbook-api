@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
 
 eval_gemfile 'CommonGemfile'

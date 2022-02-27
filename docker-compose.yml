@@ -1,0 +1,46 @@
+version: '3.9'
+services:
+  base_api_alpine:
+    image: base_api_alpine
+    build:
+      dockerfile: docker/dev/Dockerfile.alpine
+      context: .
+      args:
+        RUBY_VERSION: '2.7'
+        PG_CLI_VERSION: '13+225'
+        BUNDLER_VERSION: '2.3.7'
+        BUNDLE_GEMFILE: Gemfile
+    volumes:
+      - ./:/opt/workbook/
+      - ./tmp:/opt/workbook/tmp/
+      - gems:/opt/gems
+  # Base image for all api ruby images
+  base_api_ruby3:
+    image: base_api
+    build:
+      dockerfile: docker/dev/Dockerfile
+      context: .
+      args:
+        RUBY_VERSION: '3.0.0'
+        PG_CLI_VERSION: '13+225'
+        BUNDLER_VERSION: '2.3.7'
+    volumes:
+      - ./:/opt/workbook/
+      - ./tmp:/opt/workbook/tmp/
+    entrypoint: /bin/true
+  base_api:
+    image: base_api
+    build:
+      dockerfile: docker/dev/Dockerfile
+      context: .
+      args:
+        RUBY_VERSION: '2.7'
+        PG_CLI_VERSION: '13+225'
+        BUNDLER_VERSION: '2.3.7'
+    volumes:
+      - ./:/opt/workbook/
+      - ./tmp:/opt/workbook/tmp/
+      - gems:/opt/gems
+    entrypoint: /bin/true
+volumes:
+  gems: {}
