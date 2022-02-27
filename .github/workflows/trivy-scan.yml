@@ -1,8 +1,8 @@
-name: build
+name: Trivy scanner
 on:
   push:
     branches:
-      - main 
+      - master
   pull_request:
 jobs:
   build:
@@ -11,11 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Run Trivy vulnerability scanner with rootfs command
+      - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'rootfs'
-          scan-ref: 'rootfs-example-binary'
+          scan-type: 'fs'
           ignore-unfixed: true
           format: 'sarif'
           output: 'trivy-results.sarif'
