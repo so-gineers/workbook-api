@@ -10,10 +10,12 @@ info:
   contact:
     email: "workbook@so-gineers.com"
 servers:
-  - url: 'https://workbook-api-demo.herokuapp.com'
-    description: 'heroku'
-  - url: 'http://localhost:3312'
-    description: 'local'
+  - url: "https://workbook-api.ml"
+    description: "swarm-cluster-dev"
+  - url: "https://workbook-api-demo.herokuapp.com"
+    description: "heroku"
+  - url: "http://localhost:3312"
+    description: "local"
 components:
   securitySchemes:
     api_key:
@@ -21,9 +23,8 @@ components:
       name: Api key auth
       in: header
 tags:
-- name: teachers
-  description: Endpoints for teachers
+  - name: teachers
+    description: Endpoints for teachers
 paths:
   /teachers/sessions:
-    $ref: './paths/teachers/sessions.yml'
-
+    $ref: "./paths/teachers/sessions.yml"
