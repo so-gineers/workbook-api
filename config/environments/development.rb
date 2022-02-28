@@ -27,7 +27,7 @@ Rails.application.configure do
   config.action_view.annotate_rendered_view_with_filenames = true
 
   # config.action_cable.disable_request_forgery_protection = true
-  ENV['APP_HOSTS'].split.each do |host|
+  ENV['WORKBOOK_APP_HOSTS'].split.each do |host|
     config.hosts << host
   end
 end
