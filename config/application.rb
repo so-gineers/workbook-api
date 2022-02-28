@@ -33,7 +33,7 @@ module WorkookApi
     end
 
     ENV['WORKBOOK_APP_HOSTS'].split.each do |host|
-      config.hosts << host.compact
+      config.hosts << host.strip
     end
   end
 end
