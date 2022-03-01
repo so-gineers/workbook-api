@@ -14,6 +14,9 @@ development:
 test:
   <<: *default
 
+production:
+  <<: *default
+
 heroku:
   adapter: postgresql
   database: <%= ENV.fetch("RAILS_DB_NAME") { "workbooker" } %>
