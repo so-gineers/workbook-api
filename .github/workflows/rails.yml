@@ -31,8 +31,7 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
       - name: Rubocop
-        run: bundle exec rubocop
-        continue-on-error: true
+        run: bundle exec rubocop -c .rubocop.yml
       - name: Bundle audit
         run: bundle exec bundler-audit --update
       - name: Strong versions
