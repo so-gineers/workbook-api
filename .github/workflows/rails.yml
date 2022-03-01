@@ -48,6 +48,7 @@ jobs:
           RAILS_DB_PORT: 5432
           RAILS_DB_PASSWORD: workook_api_test
           BUNDLE_GEMFILE: ${{ matrix.bundle_gemfile }}
+          WORKBOOK_APP_HOSTS: test.host
         run: |
           bundle install
           bundle exec rails db:create db:migrate

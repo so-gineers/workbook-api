@@ -31,5 +31,9 @@ module WorkookApi
     config.generators do |generator|
       generator.orm :active_record, primary_key_type: :uuid
     end
+
+    ENV['WORKBOOK_APP_HOSTS'].split.each do |host|
+      config.hosts << host.strip
+    end
   end
 end
