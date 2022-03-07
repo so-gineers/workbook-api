@@ -24,3 +24,6 @@
 .byebug_history
 coverage/
 *.swp
+.ash_history
+.irb_history
+.cache

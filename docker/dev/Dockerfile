@@ -11,6 +11,12 @@ ARG BUNDLER_VERSION
 
 LABEL version="1.0.0"
 
+ENV LANG=C.UTF-8 \
+  BUNDLE_JOBS=20 \
+  BUNDLE_RETRY=3 \
+  BUNDLE_PATH=/opt/workbook/gems \
+  RAILS_ROOT=/opt/workbook/workbook
+
 RUN groupadd -r worbooker -g 1000 && \
     useradd -u 1000 -r -g worbooker -s /sbin/nologin -c "Workbook user" worbooker \
     && apt-get update --no-install-recommends -qq  \
@@ -20,33 +26,23 @@ RUN groupadd -r worbooker -g 1000 && \
     && echo "gem: --no-ri --no-rdoc --no-document" > ~/.gemrc \
     && gem install bundler:$BUNDLER_VERSION
 
-ENV LANG=C.UTF-8 \
-  BUNDLE_JOBS=8 \
-  BUNDLE_RETRY=3 \
-  BUNDLE_PATH=/opt/gems \
-  GEM_PATH=/opt/gems \
-  GEM_HOME=/opt/gems
-
-WORKDIR /opt/workbook
+WORKDIR $RAILS_ROOT 
 
 COPY ./CommonGemfile \
      ./Gemfile \
      ./Gemfile.lock \
      ./NextGemfile \
-     ./NextGemfile.lock /opt/workbook/
-
-WORKDIR /opt/workbook/
+     ./NextGemfile.lock $RAILS_ROOT
 
 RUN bundle update --bundler \
-    && bundle install \
-    && BUNDLE_GEMFILE=NextGemfile bundle install \
-    && gem cleanup all
+    && bundle check || bundle install --verbose --full-index \
+    && gem cleanup all \
+    && bundle clean 
 
-COPY . /opt/workbook
+COPY . $RAILS_ROOT 
 
-ENV PATH="/opt/workbook/entrypoints:${PATH}" \
-    BUNDLE_GEMFILE=${BUNDLE_GEMFILE}
 EXPOSE 3000
 
-CMD [ "/bin/bash" ]
+ENV PATH="/opt/workbook/workbook/entrypoints:${PATH}"
 ENTRYPOINT ["entrypoint.sh"]
+CMD ["bundle exec rails server -b 0.0.0.0 -p 3000"]
