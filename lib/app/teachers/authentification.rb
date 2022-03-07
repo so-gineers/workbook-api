@@ -23,7 +23,7 @@ module APP
       def authenticate(session:)
         raise(Exceptions::InvalidSession) unless session.acceptable?
 
-        teacher = repository.find_by(email: session.identifier)
+        teacher = repository.find_by(identifier: session.identifier)
 
         raise Exceptions::InvalidCredentials unless teacher
         raise Exceptions::TeacherAccountLocked if teacher.status.eql?('locked')

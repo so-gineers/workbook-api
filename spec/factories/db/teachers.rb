@@ -3,12 +3,15 @@
 FactoryBot.define do
   factory :db_teacher, class: 'Db::Teacher' do
     title { 'mr' }
+    identifier { SecureRandom.uuid }
     last_name { FFaker::NameSN.last_name }
     first_name { FFaker::NameSN.first_name_male }
     email { FFaker::Internet.email }
-    phone_number { FFaker::PhoneNumberSN.mobile_number }
+    phone_number { FFaker::PhoneNumberSN.mobile_number.gsub('-', '') }
     banned_at {}
     password { 'workbook' }
+    created_at { Time.zone.now }
+    updated_at { Time.zone.now }
 
     trait :with_status_active do
       status { 'active' }
