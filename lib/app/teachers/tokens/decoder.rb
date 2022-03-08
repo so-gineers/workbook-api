@@ -4,7 +4,7 @@ module APP
   module Teachers
     module Tokens
       # Decodes a jwt that was previously generated for a teacher
-      class Decoder < JwtTokens::Decoder
+      class Decoder < ::JwtTokens::Decoder
         def decoding_options
           {
             algorithm: JwtTokens::HASHING_ALGORITHM,

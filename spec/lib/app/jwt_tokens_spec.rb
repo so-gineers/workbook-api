@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Tokens' do
-  let(:decodeur) { ::APP::JwtTokens::Decoder.new }
-  let(:encoder) { ::APP::JwtTokens::Encoder.new }
+  let(:decodeur) { ::JwtTokens::Decoder.new }
+  let(:encoder) { ::JwtTokens::Encoder.new }
 
   describe 'decode' do
     pending

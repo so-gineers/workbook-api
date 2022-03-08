@@ -4,7 +4,7 @@ module APP
   module Teachers
     module Tokens
       # Encodes a jwt token for given teacher
-      class Encoder < JwtTokens::Encoder
+      class Encoder < ::JwtTokens::Encoder
         attr_reader :teacher
 
         # @param teacher [Db::Teacher]
