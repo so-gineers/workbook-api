@@ -1,8 +1,8 @@
 interactor :off
 notification :off
 
-guard :rspec, cmd: "bundle exec rspec", all_on_start: true do
-  require "guard/rspec/dsl"
+guard :rspec, cmd: 'bundle exec rspec', all_on_start: true do
+  require 'guard/rspec/dsl'
   dsl = Guard::RSpec::Dsl.new(self)
   rspec = dsl.rspec
   watch(rspec.spec_helper) { rspec.spec_dir }
@@ -10,7 +10,7 @@ guard :rspec, cmd: "bundle exec rspec", all_on_start: true do
   watch(rspec.spec_files)
   ruby = dsl.ruby
   dsl.watch_spec_files_for(ruby.lib_files)
-  rails = dsl.rails(view_extensions: %w(erb haml slim))
+  rails = dsl.rails(view_extensions: %w[erb haml slim])
   dsl.watch_spec_files_for(rails.app_files)
   watch(rails.controllers) do |m|
     [
@@ -24,10 +24,10 @@ guard :rspec, cmd: "bundle exec rspec", all_on_start: true do
   watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
 end
 
-#guard :rubocop do
+# guard :rubocop do
 #  watch(%r{.+\.rb$})
 #  watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
-#end
+# end
 
 guard 'migrate' do
   watch(%r{^db/migrate/(\d+).+\.rb})

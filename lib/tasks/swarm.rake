@@ -11,7 +11,7 @@ namespace :swarm do
       seconds = rand(3..10)
       puts "Attempt #{i} another migration is running => sleeping #{seconds}s"
       sleep(seconds)
-    rescue => e
+    rescue StandardError => e
       puts e
       e.backtrace.each { |m| puts m }
       break
