@@ -1,21 +1,31 @@
 on:
+  pull_request:
   push:
     branches:
       - main
 jobs:
-  release-on-push:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - id: release
-        uses: rymndhng/release-on-push-action@master
-        with:
-          tag_prefix: "w-"
-          use_github_release_notes: true
-          release_name: "Version <RELEASE_VERSION>"
-          bump_version_scheme: norelease
-      - name: Check Output Parameters
-        run: |
-          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-          echo "Got release version ${{ steps.release.outputs.version }}"
+  create_release:
+    uses: so-gineers/workbook-api/.github/workflows/create-release.yml@GH-1/reusable_github_workflows
+  build_api_images_2x:
+    uses: so-gineers/workbook-api/.github/workflows/docker.yml@GH-1/reusable_github_workflows
+    needs: [create_release]
+    with:
+      release_version: "0.0.1"
+      ruby_version: "2.7.5"
+      pg_cli_version: "13+225"
+      bundler_version: "2.3.7"
+  build_api_images_3x:
+    uses: so-gineers/workbook-api/.github/workflows/docker.yml@GH-1/reusable_github_workflows
+    needs: [create_release]
+    with:
+      release_version: "0.0.1"
+      ruby_version: "3.0.3"
+      pg_cli_version: "13+225"
+      bundler_version: "2.3.7"
+  build_students_api_docs_images:
+    uses: so-gineers/workbook-api/.github/workflows/api-documentation.yml@GH-1/reusable_github_workflows
+    needs: [create_release]
+    with:
+      release_version: "0.0.1"
+      dockerfile: ./swagger/students/Dockerfile
+      imagename: workbook-students-api-docs
