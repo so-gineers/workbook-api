@@ -15,6 +15,12 @@ on:
       pg_cli_version:
         required: true
         type: string
+      dockerfile:
+        required: true
+        type: string
+      image_suffix:
+        required: true
+        type: string
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,7 +41,7 @@ jobs:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-dev-${{ inputs.ruby_version }}
           restore-keys: |
-            ${{ runner.os }}-buildx-dev-${{ inputs.ruby_version }}
+            ${{ runner.os }}-buildx-dev-${{ inputs.ruby_version }}-${{ inputs.dockerfile }}
             ${{ runner.os }}-buildx-dev
       - name: Log in to github registry
         run: |
@@ -45,11 +51,11 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          file: ./docker/dev/Dockerfile
+          file: ${{ inputs.dockerfile }} 
           pull: true
           push: true
           tags: |
-            ghcr.io/so-gineers/workbook-api:${{ inputs.release_version }}-ruby-${{ inputs.ruby_version }}
+            ghcr.io/so-gineers/workbook-api:${{ inputs.release_version }}-${{ inputs.image_suffix }}-${{ inputs.ruby_version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           build-args: |
@@ -59,7 +65,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/so-gineers/workbook-api:${{ inputs.release_version }}-ruby-${{ inputs.ruby_version }}
+          image-ref: ghcr.io/so-gineers/workbook-api:${{ inputs.release_version }}-${{ inputs.image_suffix }}-${{ inputs.ruby_version }}
           format: 'sarif'
           output: 'trivy-results.sarif'
       - name: Upload Trivy scan results to GitHub Security tab
