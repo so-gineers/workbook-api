@@ -1,0 +1,32 @@
+name: Api docs / students
+on:
+  workflow_call:
+    outputs:
+      release_name:
+        description: The name of the tag created
+        value: ${{ jobs.build.outputs.tag_name }}
+      release_version:
+        description: The version number of the release created
+        value: ${{ jobs.build.outputs.version }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      tag_name: ${{ steps.release.outputs.tag_name}}
+      release_version: ${{ steps.release.outputs.version }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - id: release
+        uses: rymndhng/release-on-push-action@master
+        with:
+          tag_prefix: "w-"
+          use_github_release_notes: true
+          release_name: "Version <RELEASE_VERSION>"
+          bump_version_scheme: patch
+      - name: Check Output Parameters
+        run: |
+          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
+          echo "Got release version ${{ steps.release.outputs.version }}"
