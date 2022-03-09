@@ -6,11 +6,22 @@ on:
 jobs:
   create_release:
     uses: so-gineers/workbook-api/.github/workflows/create-release.yml@GH-1/reusable_github_workflows
-  build_api_images:
+  build_api_images_2x:
     uses: so-gineers/workbook-api/.github/workflows/docker.yml@GH-1/reusable_github_workflows
     needs: [create_release]
     with:
       release_version: ${{ needs.create_release.outputs.release_version }}
+      ruby_version: "2.7.5"
+      pg_cli_version: "13+225"
+      bundler_version: "2.3.7"
+  build_api_images_3x:
+    uses: so-gineers/workbook-api/.github/workflows/docker.yml@GH-1/reusable_github_workflows
+    needs: [create_release]
+    with:
+      release_version: ${{ needs.create_release.outputs.release_version }}
+      ruby_version: "3.0.3"
+      pg_cli_version: "13+225"
+      bundler_version: "2.3.7"
   build_students_api_docs_images:
     uses: so-gineers/workbook-api/.github/workflows/api-documentation.yml@GH-1/reusable_github_workflows
     needs: [create_release]
