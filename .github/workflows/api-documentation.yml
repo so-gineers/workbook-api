@@ -1,7 +1,10 @@
 name: Api docs / students
 on:
-  release:
-    types: [created]
+  workflow_call:
+    inputs:
+      release_version:
+        required: true
+        type: string
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,11 +19,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
-        env:
-
       - name: Set up Docker build for students api docs
         id: buildx_students_api_docs
         uses: docker/setup-buildx-action@v1
@@ -38,4 +36,4 @@ jobs:
           pull: true
           push: true
           tags: |
-            ghcr.io/so-gineers/${{ matrix.imagename }}:${{ steps.get_release.outputs.tag_name }}
+            ghcr.io/so-gineers/${{ matrix.imagename }}:${{ inputs.release_version }}
