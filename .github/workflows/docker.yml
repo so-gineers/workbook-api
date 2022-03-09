@@ -1,12 +1,11 @@
 name: Docker
 on:
-  push:
-    tags:
-      - "*"
-  release:
-    types: [created]
-  tags:
-    types: [created]
+  workflow_call:
+    inputs:
+      release_version:
+        required: true
+        type: string
+        default: "0.0.1"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,11 +25,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - name: Set up Docker build for current rails version
         id: buildx
         uses: docker/setup-buildx-action@v1
@@ -56,7 +50,7 @@ jobs:
           pull: true
           push: true
           tags: |
-            ghcr.io/so-gineers/workbook-api:${{ steps.get_release.outputs.tag_name }}-ruby-${{ matrix.ruby-version }}
+            ghcr.io/so-gineers/workbook-api:${{ inputs.release_version }}-ruby-${{ matrix.ruby-version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           build-args: |
@@ -66,7 +60,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/so-gineers/workbook-api:${{ steps.get_release.outputs.tag_name }}-ruby-${{ matrix.ruby-version }}
+          image-ref: ghcr.io/so-gineers/workbook-api:${{ inputs.release_version }}-ruby-${{ matrix.ruby-version }}
           format: 'sarif'
           output: 'trivy-results.sarif'
       - name: Upload Trivy scan results to GitHub Security tab
