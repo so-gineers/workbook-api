@@ -5,6 +5,7 @@ on:
       release_version:
         required: true
         type: string
+        default: "0.0.1"
 jobs:
   build:
     runs-on: ubuntu-latest
