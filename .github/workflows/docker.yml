@@ -2,6 +2,8 @@ name: Docker
 on:
   release:
     types: [created]
+  tags:
+    types: [created]
 jobs:
   build:
     runs-on: ubuntu-latest
