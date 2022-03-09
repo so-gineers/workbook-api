@@ -7,9 +7,9 @@ module Swarm
     private
 
     def migrate_without_lock
-      puts "Database migration"
+      puts 'Database migration'
       Rake::Task['db:migrate'].invoke
-      puts "Migrations successful"
+      puts 'Migrations successful'
     end
   end
 end

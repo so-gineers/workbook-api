@@ -24,6 +24,7 @@ module WorkookApi
   # Application class
   class Application < Rails::Application
     config.load_defaults 7.0
+    config.active_record.encryption.store_key_references = true
     config.active_record.schema_format = :ruby
     config.api_only = true
     config.autoload_paths << config.root.join('lib')

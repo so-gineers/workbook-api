@@ -1,0 +1,23 @@
+FROM debian:bullseye-slim 
+
+ARG PG_CLI_VERSION
+RUN apt-get update && apt-get install -y curl gnupg2
+RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+RUN apt-get update \
+    && apt-get upgrade \
+    && apt-get install -y cron rsyslog  postgresql-client-$PG_CLI_VERSION \
+    && touch /etc/default/locale \
+    && sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
+
+ADD ./bin/wb/backup-replay-database.sh /backup-replay-database.sh
+ADD ./bin/wb/backup-replay-cron /etc/cron.d/backup-replay
+COPY ./bin/wb/rsyslog.conf /etc/rsyslog.d/console.conf
+
+RUN chmod 755 /backup-replay-database.sh \
+    && chmod 755 /etc/cron.d/backup-replay
+
+VOLUME /var/backups
+VOLUME /var/log/cron
+
+CMD sh -euc '/usr/sbin/rsyslogd -n & /usr/sbin/cron -fL 15' 

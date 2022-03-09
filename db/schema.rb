@@ -24,16 +24,16 @@ ActiveRecord::Schema[7.0].define(version: 2021_08_13_092347) do
     t.enum "status", default: "pending", enum_type: "teacher_status"
     t.enum "title", default: "mr", null: false, enum_type: "person_title"
     t.datetime "banned_at"
-    t.string "email", null: false
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "identifier", null: false
+    t.text "email", null: false
+    t.text "first_name", null: false
+    t.text "last_name", null: false
     t.datetime "locked_at"
-    t.string "phone_number", null: false
+    t.text "phone_number", null: false
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_db_teachers_on_email", unique: true
-    t.index ["phone_number"], name: "index_db_teachers_on_phone_number", unique: true
+    t.index ["identifier"], name: "index_db_teachers_on_identifier", unique: true
     t.index ["status"], name: "index_db_teachers_on_status"
   end
 

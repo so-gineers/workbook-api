@@ -6,7 +6,7 @@ RSpec.describe APP::Teachers::Tokens::Decoder do
   let(:instance) { described_class.new }
 
   it 'hérite de la class encodeur de base' do
-    expect(instance).to be_a(APP::JwtTokens::Decoder)
+    expect(instance).to be_a(::JwtTokens::Decoder)
   end
 
   it 'définit une méthode options de décodage' do

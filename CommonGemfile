@@ -25,12 +25,13 @@ end
 group :development do
   gem 'debase', '~> 0.2.4', require: false
   gem 'listen', '~> 3.3'
-  gem 'spring', '~> 2.1'
+  gem 'spring', '~> 4.0'
 end
 
 group :test do
   gem 'simplecov', '~> 0.21.2'
   gem 'simplecov-lcov', '~> 0.8.0'
+  gem 'shoulda-matchers', '~> 5.1'
   gem 'undercover', '~> 0.4.4'
 end
 
@@ -45,7 +46,7 @@ group :tools do
   gem 'rails_best_practices', '~> 1.23'
   gem 'rubocop', '~> 1.25'
   gem 'rubocop-rails', '~> 2.13'
-  gem 'rubocop-rspec', '~> 2.8'
+  gem 'rubocop-rspec', '~> 2.9'
   gem 'rubycritic', '~> 4.6'
   gem 'strong_migrations', '~> 0.8.0'
   gem 'strong_versions','~> 0.4.5'

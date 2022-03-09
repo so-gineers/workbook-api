@@ -27,7 +27,7 @@ RSpec.describe APP::Teachers::Authentification do
     context 'with a valid session' do
       context 'with existing teacher' do
         let(:teacher) { FactoryBot.create(:db_teacher, :with_status_active) }
-        let(:identifier) { teacher.email }
+        let(:identifier) { teacher.identifier }
 
         context 'when password is invalid' do
           let(:password) { 'iu§!èyoçèà' }

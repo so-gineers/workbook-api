@@ -5,11 +5,13 @@ module Db
   class Teacher < ApplicationRecord
     has_secure_password
 
-    NextRailsVersionHelper.rails_7! do
-      encrypts :email, deterministic: true
-      encrypts :first_name
-      encrypts :last_name
-      encrypts :telephone
-    end
+    validates :identifier, :email, :first_name, :last_name, :phone_number,
+      presence: true
+    validates :identifier, uniqueness: { case_sensitive: false }
+
+    encrypts :email
+    encrypts :first_name
+    encrypts :last_name
+    encrypts :phone_number
   end
 end
