@@ -17,4 +17,4 @@ USER app
 WORKDIR /home/app
 COPY --from=dependencies /usr/local/bundle/ /usr/local/bundle/
 COPY --chown=app . /home/app
-CMD ["bundle", "exec", "guard", "--force-polling"]
+CMD bundle exeec swarm:migrate && bundle exec rails s -p 3000 -b 0.0.0.0 
