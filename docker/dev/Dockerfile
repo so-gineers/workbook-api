@@ -33,16 +33,15 @@ COPY ./CommonGemfile \
      ./Gemfile.lock \
      ./NextGemfile \
      ./NextGemfile.lock $RAILS_ROOT
+COPY entrypoints/entrypoint.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN bundle update --bundler \
-    && bundle check || bundle install --verbose --full-index \
-    && gem cleanup all \
-    && bundle clean 
+    && bundle check || bundle install --verbose --full-index
 
 COPY . $RAILS_ROOT 
 
 EXPOSE 3000
 
-ENV PATH="/opt/workbook/workbook/entrypoints:${PATH}"
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["bundle exec rails server -b 0.0.0.0 -p 3000"]
